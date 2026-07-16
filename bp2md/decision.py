@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from bp2md.pdf_detector import PDFInfo
+
 
 @dataclass(slots=True)
 class Decision:
@@ -13,15 +15,26 @@ class DecisionEngine:
 
     def decide(
         self,
-        *,
-        has_text: bool,
+        info: PDFInfo,
         quality_score: int,
     ) -> Decision:
 
-        if not has_text:
+        if info.encrypted:
+            return Decision(
+                use_ocr=False,
+                reason="Encrypted PDF",
+            )
+
+        if not info.has_text:
             return Decision(
                 use_ocr=True,
                 reason="No text layer",
+            )
+
+        if info.corruption > 10:
+            return Decision(
+                use_ocr=True,
+                reason=f"Corruption {info.corruption:.1f}%",
             )
 
         if quality_score < 60:

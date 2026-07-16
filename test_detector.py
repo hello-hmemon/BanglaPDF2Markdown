@@ -1,31 +1,21 @@
 from pathlib import Path
 
-from bp2md.detector import PDFDetector
-
-pdf = Path("sample.pdf")
-
+from bp2md.pdf_detector import PDFDetector
 
 detector = PDFDetector()
 
-result = detector.analyze(pdf)
-
+info = detector.analyze(Path("sample.pdf"))
 
 print("PDF Analysis")
-print("----------------")
+print("-" * 30)
 
-print("Pages:", result.pages)
-print("Text Layer:", result.has_text)
-print("Tagged:", result.tagged)
+print(f"Pages        : {info.pages}")
+print(f"Text Layer   : {info.has_text}")
+print(f"Tagged       : {info.tagged}")
+print(f"Encrypted    : {info.encrypted}")
 
-print("Characters:", result.characters)
-print("Bangla chars:", result.bangla_characters)
-
-print("Replacement:", result.replacement_count)
-
-print("Corruption:", f"{result.corruption_ratio:.2%}")
-
-
-if result.ocr_recommended:
-    print("\nDecision: OCR Recommended")
-else:
-    print("\nDecision: Normal Extraction")
+print(f"Characters   : {info.characters:,}")
+print(f"Bangla       : {info.bangla_chars:,}")
+print(f"English      : {info.english_chars:,}")
+print(f"Images       : {info.images}")
+print(f"Corruption   : {info.corruption:.2f}%")
