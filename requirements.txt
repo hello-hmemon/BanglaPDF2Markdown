@@ -1,7 +1,5 @@
+markitdown
 pymupdf
 pdfplumber
-markitdown
 ocrmypdf
-rich
-typer
-tqdm
+pymupdf4llm
