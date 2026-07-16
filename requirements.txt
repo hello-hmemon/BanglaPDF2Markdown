@@ -1,0 +1,7 @@
+pymupdf
+pdfplumber
+markitdown
+ocrmypdf
+rich
+typer
+tqdm

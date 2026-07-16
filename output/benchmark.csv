@@ -1,0 +1,9 @@
+PDF,Extractor,Score,Pages,Words,Characters
+sample.pdf,PyMuPDF,70,3,1669,11673
+sample.pdf,PDFPlumber,78,3,1694,11570
+sample.pdf,Poppler,73,?,1726,15816
+sample.pdf,MarkItDown,73,?,1726,11959
+sample.pdf,PyMuPDF,70,3,1669,11673
+sample.pdf,PDFPlumber,78,3,1694,11570
+sample.pdf,Poppler,73,?,1726,15816
+sample.pdf,MarkItDown,73,?,1726,11959
