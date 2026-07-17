@@ -3,18 +3,19 @@ from tests.conftest import OUTPUT_DIR
 from bp2md.corpus import CorpusAnalyzer
 from bp2md.rule_generator import RuleGenerator
 
-folder = OUTPUT_DIR / "pdfplumber"
 
-counter = CorpusAnalyzer().analyze_folder(folder)
+def test_rule_generator():
 
-rules = RuleGenerator().generate(counter)
+    folder = OUTPUT_DIR / "pdfplumber"
 
-print()
+    counter = CorpusAnalyzer().analyze_folder(folder)
 
-print("Generated Rules")
+    rules = RuleGenerator().generate(counter)
 
-print("=" * 40)
+    # Should return a list
+    assert isinstance(rules, list)
 
-for rule in rules:
-
-    print(f"{rule.pattern!r:<8}" f"{rule.frequency:>6}")
+    # Every generated rule should be valid
+    for rule in rules:
+        assert rule.pattern
+        assert rule.frequency >= 0

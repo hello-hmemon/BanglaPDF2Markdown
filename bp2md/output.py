@@ -1,17 +1,46 @@
 from __future__ import annotations
 
-import json
+import re
 from pathlib import Path
 
-from bp2md.config import (
-    OUTPUT_DIR,
-    SAVE_JSON,
-    SAVE_MARKDOWN,
-    SAVE_TEXT,
-)
+from bp2md.config import OUTPUT_DIR
 
 
 class OutputManager:
+
+    def __init__(self):
+
+        self.output_dir = OUTPUT_DIR
+
+        self.benchmark_dir = (
+            self.output_dir / "benchmark"
+        )
+
+        self.final_dir = (
+            self.output_dir / "final"
+        )
+
+        self.benchmark_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+        self.final_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
+    def _clean_name(self, name: str) -> str:
+
+        name = name.lower()
+
+        name = re.sub(
+            r"[^a-z0-9]+",
+            "_",
+            name,
+        )
+
+        return name.strip("_")
 
     def save_text(
         self,
@@ -20,74 +49,54 @@ class OutputManager:
         text: str,
     ) -> Path:
 
-        folder = OUTPUT_DIR / extractor.lower().replace(" ", "_")
+        folder = (
+            self.benchmark_dir
+            / self._clean_name(extractor)
+        )
 
         folder.mkdir(
             parents=True,
             exist_ok=True,
         )
 
-        path = folder / f"{pdf.stem}.txt"
+        output = folder / f"{pdf.stem}.txt"
 
-        if SAVE_TEXT:
+        output.write_text(
+            text,
+            encoding="utf-8",
+        )
 
-            path.write_text(
-                text,
-                encoding="utf-8",
-            )
+        return output
 
-        return path
-
-    def save_markdown(
+    def save_final(
         self,
-        extractor: str,
         pdf: Path,
         text: str,
-    ) -> Path:
+    ) -> tuple[Path, Path]:
 
-        folder = OUTPUT_DIR / extractor.lower().replace(" ", "_")
-
-        folder.mkdir(
-            parents=True,
-            exist_ok=True,
+        txt_file = (
+            self.final_dir
+            / f"{pdf.stem}.txt"
         )
 
-        path = folder / f"{pdf.stem}.md"
-
-        if SAVE_MARKDOWN:
-
-            path.write_text(
-                text,
-                encoding="utf-8",
-            )
-
-        return path
-
-    def save_json(
-        self,
-        extractor: str,
-        pdf: Path,
-        data: dict,
-    ) -> Path:
-
-        folder = OUTPUT_DIR / extractor.lower().replace(" ", "_")
-
-        folder.mkdir(
-            parents=True,
-            exist_ok=True,
+        md_file = (
+            self.final_dir
+            / f"{pdf.stem}.md"
         )
 
-        path = folder / f"{pdf.stem}.json"
+        txt_file.write_text(
+            text,
+            encoding="utf-8",
+        )
 
-        if SAVE_JSON:
+        markdown = (
+            f"# {pdf.stem}\n\n"
+            f"{text}"
+        )
 
-            path.write_text(
-                json.dumps(
-                    data,
-                    ensure_ascii=False,
-                    indent=2,
-                ),
-                encoding="utf-8",
-            )
+        md_file.write_text(
+            markdown,
+            encoding="utf-8",
+        )
 
-        return path
+        return txt_file, md_file

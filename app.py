@@ -1,21 +1,83 @@
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+from bp2md.config import (
+    APP_NAME,
+    VERSION,
+    INPUT_DIR,
+)
+from bp2md.pipeline import ExtractionPipeline
+
+
 def process_pdf(pdf: Path):
 
     if not pdf.exists():
-        print(f"[ERROR] File not found: {pdf}")
-        return
 
-    print(f"\n{'=' * 60}")
+        candidate = INPUT_DIR / pdf.name
+
+        if candidate.exists():
+            pdf = candidate
+
+        else:
+            print(f"[ERROR] File not found: {pdf}")
+            return
+
+    print("\n" + "=" * 60)
     print(pdf.name)
     print("=" * 60)
 
-    hybrid = HybridOCR()
+    pipeline = ExtractionPipeline()
 
-    pdf_to_process, used_ocr = hybrid.process(pdf)
+    pipeline.run(pdf)
 
-    if used_ocr:
-        print("OCR Applied")
+
+def process_folder(folder: Path):
+
+    pdfs = sorted(
+        folder.glob("*.pdf")
+    )
+
+    if not pdfs:
+
+        print("No PDF files found.")
+        return
+
+    for pdf in pdfs:
+
+        process_pdf(pdf)
+
+
+def main():
+
+    parser = argparse.ArgumentParser(
+        prog=APP_NAME,
+        description=f"{APP_NAME} v{VERSION}",
+    )
+
+    parser.add_argument(
+        "input",
+        help="PDF file or folder",
+    )
+
+    args = parser.parse_args()
+
+    path = Path(args.input)
+
+    if path.is_file():
+
+        process_pdf(path)
+
+    elif path.is_dir():
+
+        process_folder(path)
+
     else:
-        print("OCR Not Needed")
 
-    runner = BenchmarkRunner()
-    runner.run(pdf_to_process)
+        process_pdf(path)
+
+
+if __name__ == "__main__":
+
+    main()

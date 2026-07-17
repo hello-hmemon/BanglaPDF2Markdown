@@ -19,10 +19,7 @@ class HybridOCR:
 
         info = self.detector.analyze(pdf)
 
-        decision = self.decision.decide(
-            has_text=info.has_text,
-            quality_score=100,
-        )
+        decision = self.decision.decide(info, 100)
 
         print(f"\nDecision : {decision.reason}")
 
