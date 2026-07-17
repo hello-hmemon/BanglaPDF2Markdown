@@ -1,15 +1,51 @@
-__pycache__/
-*.pyc
+# ==================================================
+# Python
+# ==================================================
 
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual Environment
 .venv/
 venv/
+env/
+
+# Pytest
+.pytest_cache/
+
+# Ruff / Black
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# ==================================================
+# Generated Output
+# ==================================================
 
 output/
 
-*.db
-*.sqlite
+# Test PDFs
+input/
 
-.idea/
-.vscode/
-
+# Logs
 *.log
+
+# SQLite
+*.db
+
+# ==================================================
+# Build
+# ==================================================
+
+build/
+dist/
+*.egg-info/

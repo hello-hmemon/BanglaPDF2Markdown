@@ -1,5 +1,4 @@
-markitdown
-pymupdf
-pdfplumber
-ocrmypdf
-pymupdf4llm
+markitdown>=0.1
+PyMuPDF>=1.26
+pdfplumber>=0.11
+ocrmypdf>=16

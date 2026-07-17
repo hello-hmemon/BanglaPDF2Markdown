@@ -1,279 +1,199 @@
-\# BanglaPDF2Markdown
+# BanglaPDF2Markdown
 
+> Smart Bangla PDF to Markdown extraction pipeline with OCR,
+> benchmarking and Bangla Unicode repair.
 
+!\[Python](https://img.shields.io/badge/Python-3.11%2B-blue)
+!\[License](https://img.shields.io/badge/License-MIT-green)
+!\[Platform](https://img.shields.io/badge/Platform-Windows-lightgrey)
 
-A smart PDF extraction and conversion pipeline focused on \*\*Bangla PDF documents\*\*.
-
-
-
-BanglaPDF2Markdown automatically detects PDF quality, selects the best extraction method, repairs common Bangla Unicode ordering issues, and exports clean text/Markdown output.
-
-
-
-\---
-
-
-
-\## Features
-
-
-
-\### PDF Analysis
-
-\- Detect text layer availability
-
-\- Detect encrypted PDFs
-
-\- Analyze PDF structure
-
-\- Estimate extraction quality
-
-
-
-\### Smart OCR Decision
-
-\- Automatically decides whether OCR is required
-
-\- Supports Bangla + English OCR
-
-\- Avoids unnecessary OCR on digital PDFs
-
-
-
-\### Multiple Extraction Engines
-
-
-
-Supported extractors:
-
-
-
-\- PyMuPDF
-
-\- PDFPlumber
-
-\- Poppler (`pdftotext`)
-
-\- Microsoft MarkItDown
-
-
-
-Each extractor is benchmarked automatically.
-
-
+Repository: https://github.com/hello-hmemon/BanglaPDF2Markdown
 
 \---
 
+## Features
 
+* Automatic PDF analysis
+* Smart OCR decision (OCR only when needed)
+* Four extraction engines:
 
-\## Bangla Text Repair
+  * PyMuPDF
+  * PDFPlumber
+  * Poppler (pdftotext)
+  * MarkItDown
+* Bangla Unicode repair engine
+* Automatic quality scoring
+* Benchmark comparison
+* CSV \& SQLite logging
+* TXT and Markdown export
 
-
-
-Bangla PDFs often contain Unicode ordering problems.
-
-
-
-Example:
-
-
-Before: শবদ্যািয়
-
-After: বিদ্যালয়
-
-
-
-Built-in repair rules fix common issues:
-
-- `াি → ি`
-- `েি → ি`
-- `োি → ি`
-- `ৌি → ি`
-- `।। → ।`
-
----
-
-## Quality Scoring
-
-Every extraction is evaluated using:
-
-- Bangla character count
-- Replacement issues
-- Unicode corruption patterns
-- Text quality score
-
-Example:
-
-Score Before : 78/100
-Score After : 100/100
-
-
-
----
-
-## Output Structure
-
-After processing:
-output/
-
-├── benchmark/
-│
-│ ├── pymupdf/
-│ ├── pdfplumber/
-│ ├── poppler/
-│ └── markitdown/
-│
-├── final/
-│
-│ ├── sample.txt
-│ └── sample.md
-│
-├── benchmark.csv
-└── benchmark.db
-
-
----
+\---
 
 ## Installation
 
-Clone repository:
-
-```bash
-git clone <repository-url>
-
+``` bash
+git clone https://github.com/hello-hmemon/BanglaPDF2Markdown.git
 cd BanglaPDF2Markdown
 
+python -m venv .venv
 
-
-Install dependencies:
+# Windows
+.venv\\Scripts\\activate
 
 pip install -r requirements.txt
+```
 
+### External tools
 
+Install if OCR support is required:
 
-Requirements
+* Tesseract OCR
+* OCRmyPDF
+* Poppler
 
-Python:
+\---
 
-Python 3.11+
+## Usage
 
-
-
-External tools:
-
-Poppler
-
-Required for pdftotext.
-
-Windows:
-
-Install Poppler and add:
-
-Library/bin
-
-to PATH.
-
-
-Tesseract OCR
-
-Required for scanned PDFs.
-
-Install:
-
-Tesseract OCR
-Bangla language pack
-
-Language:
-
-ben+eng
-
-
-Usage
-
-Single PDF:
-
+``` bash
 python app.py sample.pdf
+```
 
+Absolute path:
 
-PDF inside input folder:
+``` bash
+python app.py "D:\\PDF Test Files\\book.pdf"
+```
 
-python app.py input/sample.pdf
+\---
 
+## Pipeline
 
-Folder processing:
+``` text
+PDF
+ │
+ ▼
+Analyze PDF
+ │
+ ▼
+OCR Decision
+ │
+ ▼
+Run Extractors
+ │
+ ▼
+Unicode Repair
+ │
+ ▼
+Quality Score
+ │
+ ▼
+Benchmark
+ │
+ ▼
+Final TXT / Markdown
+```
 
-python app.py input/
+\---
 
+## Extractors
 
-Example
+Extractor    Notes
 
+\---
 
-Analyzing PDF...
+PyMuPDF      Fast
+PDFPlumber   High text quality
+Poppler      Better table/layout preservation
+MarkItDown   Markdown friendly
 
-Pages      : 3
-Text Layer : True
+Poppler is preferred for the final output when available because it
+preserves tables and layout better, while benchmark ranking still uses
+quality scores.
 
-Decision : Normal extraction
+\---
 
-Running PDFPlumber...
+## Output
 
-Score Before : 78/100
-Score After  : 100/100
+``` text
+output/
+├── benchmark/
+│   ├── pymupdf/
+│   ├── pdfplumber/
+│   ├── poppler/
+│   └── markitdown/
+├── final/
+│   ├── sample.txt
+│   └── sample.md
+├── benchmark.csv
+└── benchmark.db
+```
 
-Winner : PDFPlumber
+\---
 
-Final TXT : output/final/sample.txt
-Final MD  : output/final/sample.md
+## Project Structure
 
-
-Database
-
-Benchmark results are stored in:
-
-output/benchmark.db
-
-
-Open with:
-
-DB Browser for SQLite
-
-
-Project Structure
-
-
+``` text
 BanglaPDF2Markdown/
-
-├── app.py
-│
 ├── bp2md/
-│   ├── detector
-│   ├── OCR
-│   ├── repair engine
-│   ├── quality scorer
-│   ├── pipeline
-│   └── output manager
-│
 ├── extractors/
-│   ├── pymupdf
-│   ├── pdfplumber
-│   ├── poppler
-│   └── markitdown
-│
 ├── tests/
-│
-├── input/
-│
-└── output/
+├── output/
+├── requirements.txt
+├── pyproject.toml
+├── LICENSE
+└── README.md
+```
 
+\---
 
-Version
+## Configuration
 
-Current: v1.0.0
+Most settings are available in:
 
+``` text
+bp2md/config.py
+```
 
-License
+Examples:
 
-MIT License
+* OCR language
+* OCR threshold
+* Output options
+* Verbose mode
 
+\---
 
----
+## Roadmap
+
+* \[x] Multi-extractor benchmark
+* \[x] OCR pipeline
+* \[x] Unicode repair
+* \[x] CSV logging
+* \[x] SQLite logging
+* \[ ] Batch processing
+* \[ ] HTML export
+* \[ ] DOCX export
+* \[ ] GUI
+* \[ ] Better table reconstruction
+
+\---
+
+## Contributing
+
+Issues and pull requests are welcome.
+
+\---
+
+## License
+
+Released under the MIT License.
+
+\---
+
+## Author
+
+**H M Nuruddin Mahamud Emon**
+
+GitHub: https://github.com/hello-hmemon
+
