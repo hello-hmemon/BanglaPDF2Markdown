@@ -1,36 +1,23 @@
-from tests.conftest import SAMPLE_TXT
+from tests.conftest import REPAIRED_TXT, SAMPLE_TXT
 
 from bp2md.repair_engine import BanglaRepairEngine
 
-text = SAMPLE_TXT.read_text(encoding="utf-8")
 
-engine = BanglaRepairEngine()
+def test_repair_engine_improves_or_keeps_score():
 
-result = engine.repair(text)
+    text = SAMPLE_TXT.read_text(encoding="utf-8")
 
-print()
+    engine = BanglaRepairEngine()
 
-print("Repair Report")
+    result = engine.repair(text)
 
-print("=" * 40)
+    # Basic checks
+    assert result.original_score >= 0
+    assert result.repaired_score >= result.original_score
+    assert result.repaired_text.strip() != ""
 
-print("Original :", result.original_score)
-
-print("Repaired :", result.repaired_score)
-
-print()
-
-print("Rules")
-
-for rule in result.applied_rules:
-
-    print(" -", rule)
-
-Path("output/repaired.txt").write_text(
-    result.repaired_text,
-    encoding="utf-8",
-)
-
-print()
-
-print("Saved: output/repaired.txt")
+    # Save repaired output for manual inspection
+    REPAIRED_TXT.write_text(
+        result.repaired_text,
+        encoding="utf-8",
+    )

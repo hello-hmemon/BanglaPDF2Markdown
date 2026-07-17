@@ -6,4 +6,7 @@ INPUT_DIR = PROJECT_ROOT / "input"
 OUTPUT_DIR = PROJECT_ROOT / "output"
 
 SAMPLE_PDF = INPUT_DIR / "sample.pdf"
+
 SAMPLE_TXT = OUTPUT_DIR / "pdfplumber" / "sample.txt"
+
+REPAIRED_TXT = OUTPUT_DIR / "repaired.txt"
