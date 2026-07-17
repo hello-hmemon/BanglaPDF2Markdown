@@ -2,18 +2,20 @@ from tests.conftest import SAMPLE_TXT
 
 from bp2md.bangla_repair import BanglaRepairAnalyzer
 
-text = SAMPLE_TXT.read_text(encoding="utf-8")
 
-analyzer = BanglaRepairAnalyzer()
+def test_repair_analyzer():
 
-items = analyzer.analyze(text)
+    text = SAMPLE_TXT.read_text(encoding="utf-8")
 
-print()
+    analyzer = BanglaRepairAnalyzer()
 
-print("Bangla Repair Analysis")
+    items = analyzer.analyze(text)
 
-print("=" * 40)
+    # Should return a list
+    assert isinstance(items, list)
 
-for item in items:
-
-    print(f"{item.pattern!r:<6} " f"{item.occurrences:>5}  " f"{item.description}")
+    # Every item should have valid data
+    for item in items:
+        assert item.pattern
+        assert item.description
+        assert item.occurrences >= 0
