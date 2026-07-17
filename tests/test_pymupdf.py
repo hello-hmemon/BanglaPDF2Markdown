@@ -1,8 +1,8 @@
-from pathlib import Path
+from tests.conftest import SAMPLE_PDF
 
 from extractors.pymupdf_ext import PyMuPDFExtractor
 
-pdf = Path("sample.pdf")
+pdf = SAMPLE_PDF
 
 extractor = PyMuPDFExtractor()
 

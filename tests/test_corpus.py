@@ -1,8 +1,8 @@
-from pathlib import Path
+from tests.conftest import OUTPUT_DIR
 
 from bp2md.corpus import CorpusAnalyzer
 
-folder = Path("output/pdfplumber")
+folder = OUTPUT_DIR / "pdfplumber"
 
 counter = CorpusAnalyzer().analyze_folder(folder)
 

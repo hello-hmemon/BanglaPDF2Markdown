@@ -1,8 +1,8 @@
-from pathlib import Path
+from tests.conftest import SAMPLE_PDF
 
 from bp2md.ocr import OCRProcessor
 
-pdf = Path("sample.pdf")
+pdf = SAMPLE_PDF
 
 ocr = OCRProcessor()
 

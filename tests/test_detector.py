@@ -1,10 +1,10 @@
-from pathlib import Path
+from tests.conftest import SAMPLE_PDF
 
 from bp2md.pdf_detector import PDFDetector
 
 detector = PDFDetector()
 
-info = detector.analyze(Path("sample.pdf"))
+info = detector.analyze(SAMPLE_PDF)
 
 print("PDF Analysis")
 print("-" * 30)

@@ -1,8 +1,8 @@
-from pathlib import Path
+from tests.conftest import SAMPLE_TXT
 
 from bp2md.bangla_repair import BanglaRepairAnalyzer
 
-text = Path("output/pdfplumber/sample.txt").read_text(encoding="utf-8")
+text = SAMPLE_TXT.read_text(encoding="utf-8")
 
 analyzer = BanglaRepairAnalyzer()
 
