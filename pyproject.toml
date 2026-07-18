@@ -1,9 +1,38 @@
-[tool.black]
-line-length = 88
-target-version = ["py311"]
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
 
-[tool.ruff]
-line-length = 88
+[project]
+name = "BanglaPDF2Markdown"
+version = "1.0.0"
+description = "Smart Bangla PDF to Markdown extraction with OCR, benchmarking, and Unicode repair."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
 
-[tool.ruff.lint]
-select = ["E", "F", "I"]
+authors = [
+{ name = "HM Emon", email = "[hmemon45750@gmail.com](mailto:hmemon45750@gmail.com)" }
+]
+
+keywords = [
+"bangla",
+"pdf",
+"markdown",
+"ocr",
+"unicode",
+"text-extraction"
+]
+
+classifiers = [
+"Development Status :: 5 - Production/Stable",
+"Intended Audience :: Developers",
+"License :: OSI Approved :: MIT License",
+"Operating System :: Microsoft :: Windows",
+"Programming Language :: Python :: 3",
+"Programming Language :: Python :: 3.11",
+"Topic :: Text Processing",
+"Topic :: Utilities"
+]
+
+[tool.setuptools]
+include-package-data = true
